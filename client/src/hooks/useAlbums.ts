@@ -2,6 +2,13 @@ import { useState, useCallback } from 'react';
 import { apiFetch } from '@/lib/api';
 import { Album } from '@/types';
 
+export interface CreateAlbumParams {
+  name: string;
+  startDate?: string;
+  endDate?: string;
+  location?: string;
+}
+
 export const useAlbums = () => {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [totalFileCount, setTotalFileCount] = useState(0);
@@ -21,12 +28,13 @@ export const useAlbums = () => {
     }
   }, []);
 
-  const createAlbum = async (name: string) => {
+  const createAlbum = async (input: string | CreateAlbumParams) => {
+    const payload = typeof input === 'string' ? { name: input } : input;
     try {
       await apiFetch('/albums', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify(payload),
       });
       await fetchAlbums();
     } catch (err: any) {

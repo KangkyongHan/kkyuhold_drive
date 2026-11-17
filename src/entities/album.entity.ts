@@ -19,6 +19,24 @@ export class Album {
   @Column()
   name: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  startDate: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  endDate: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  location: string | null;
+
+  @Column({ type: 'float', nullable: true })
+  latitude: number | null;
+
+  @Column({ type: 'float', nullable: true })
+  longitude: number | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  coverFileId: string | null;
+
   @ManyToOne(() => Couple)
   couple: Couple;
 

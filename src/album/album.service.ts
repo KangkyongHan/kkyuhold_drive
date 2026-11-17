@@ -26,6 +26,12 @@ export class AlbumService {
 
     const album = this.albumRepository.create({
       name: dto.name,
+      startDate: dto.startDate || null,
+      endDate: dto.endDate || null,
+      location: dto.location || null,
+      latitude: dto.latitude || null,
+      longitude: dto.longitude || null,
+      coverFileId: dto.coverFileId || null,
       couple: user.couple,
     });
 
@@ -39,22 +45,48 @@ export class AlbumService {
       this.albumRepository
         .createQueryBuilder('album')
         .leftJoin('album.files', 'file')
-        .select(['album.id', 'album.name', 'album.createdAt'])
+        .select([
+          'album.id',
+          'album.name',
+          'album.startDate',
+          'album.endDate',
+          'album.location',
+          'album.latitude',
+          'album.longitude',
+          'album.coverFileId',
+          'album.createdAt',
+        ])
         .addSelect('COUNT(file.id)', 'album_fileCount')
         .where('album.coupleId = :coupleId', { coupleId: user.couple.id })
         .groupBy('album.id')
         .orderBy('album.createdAt', 'DESC')
         .getRawAndEntities(),
       this.fileRepository.count({
-        where: { couple: { id: user.couple.id } }
+        where: { couple: { id: user.couple.id }, deletedAt: null as any },
       }),
     ]);
 
-    // getRawAndEntities maps the raw count to the entities
-    const albumsWithCounts = albums.entities.map((album, index) => ({
-      ...album,
-      fileCount: parseInt(albums.raw[index].album_fileCount, 10),
-    }));
+    // 각 앨범별 최신 사진 1장을 조회하여 커버 이미지로 사용
+    const albumsWithCounts = await Promise.all(
+      albums.entities.map(async (album, index) => {
+        let coverFileId = album.coverFileId;
+        if (!coverFileId) {
+          const latestFile = await this.fileRepository.findOne({
+            where: { album: { id: album.id }, isImage: true },
+            order: { createdAt: 'DESC' },
+          });
+          if (latestFile) {
+            coverFileId = latestFile.id;
+          }
+        }
+
+        return {
+          ...album,
+          coverFileId,
+          fileCount: parseInt(albums.raw[index].album_fileCount || '0', 10),
+        };
+      }),
+    );
 
     return {
       albums: albumsWithCounts,

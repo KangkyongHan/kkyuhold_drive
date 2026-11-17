@@ -6,9 +6,15 @@ export declare class AlbumController {
     create(req: any, createAlbumDto: CreateAlbumDto): Promise<import("../entities/album.entity").Album>;
     findAll(req: any): Promise<{
         albums: {
+            coverFileId: string | null;
             fileCount: number;
             id: string;
             name: string;
+            startDate: string | null;
+            endDate: string | null;
+            location: string | null;
+            latitude: number | null;
+            longitude: number | null;
             couple: import("../entities/couple.entity").Couple;
             createdAt: Date;
             updatedAt: Date;

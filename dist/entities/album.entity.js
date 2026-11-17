@@ -16,6 +16,12 @@ const file_memory_entity_1 = require("./file-memory.entity");
 let Album = class Album {
     id;
     name;
+    startDate;
+    endDate;
+    location;
+    latitude;
+    longitude;
+    coverFileId;
     couple;
     createdAt;
     updatedAt;
@@ -31,6 +37,30 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Album.prototype, "name", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", Object)
+], Album.prototype, "startDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", Object)
+], Album.prototype, "endDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", Object)
+], Album.prototype, "location", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'float', nullable: true }),
+    __metadata("design:type", Object)
+], Album.prototype, "latitude", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'float', nullable: true }),
+    __metadata("design:type", Object)
+], Album.prototype, "longitude", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", Object)
+], Album.prototype, "coverFileId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => couple_entity_1.Couple),
     __metadata("design:type", couple_entity_1.Couple)

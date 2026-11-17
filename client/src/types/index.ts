@@ -9,6 +9,12 @@ export interface User {
 export interface Album {
   id: string;
   name: string;
+  startDate?: string | null;
+  endDate?: string | null;
+  location?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  coverFileId?: string | null;
   fileCount: number;
 }
 

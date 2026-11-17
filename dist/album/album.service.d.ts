@@ -10,9 +10,15 @@ export declare class AlbumService {
     create(user: User, dto: CreateAlbumDto): Promise<Album>;
     findAll(user: User): Promise<{
         albums: {
+            coverFileId: string | null;
             fileCount: number;
             id: string;
             name: string;
+            startDate: string | null;
+            endDate: string | null;
+            location: string | null;
+            latitude: number | null;
+            longitude: number | null;
             couple: import("../entities/couple.entity").Couple;
             createdAt: Date;
             updatedAt: Date;

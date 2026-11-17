@@ -13,6 +13,12 @@ exports.CreateAlbumDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateAlbumDto {
     name;
+    startDate;
+    endDate;
+    location;
+    latitude;
+    longitude;
+    coverFileId;
 }
 exports.CreateAlbumDto = CreateAlbumDto;
 __decorate([
@@ -20,4 +26,34 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateAlbumDto.prototype, "name", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateAlbumDto.prototype, "startDate", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateAlbumDto.prototype, "endDate", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateAlbumDto.prototype, "location", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Number)
+], CreateAlbumDto.prototype, "latitude", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Number)
+], CreateAlbumDto.prototype, "longitude", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateAlbumDto.prototype, "coverFileId", void 0);
 //# sourceMappingURL=create-album.dto.js.map
