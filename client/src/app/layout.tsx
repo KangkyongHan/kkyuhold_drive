@@ -2,9 +2,14 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Our Couple Drive',
-  description: 'Two of us, infinite memories',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0',
+  title: '커플 드라이브 🌸',
+  description: '우리 둘만의 소중한 사진 보관소',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: '커플 드라이브',
+  },
 };
 
 export default function RootLayout({

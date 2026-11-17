@@ -1,0 +1,16 @@
+{
+  "name": "커플 드라이브",
+  "short_name": "커플드라이브",
+  "description": "우리 둘만의 소중한 사진 드라이브",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff0f3",
+  "theme_color": "#ff85a2",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
