@@ -24,6 +24,9 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
+    getSignupStatus() {
+        return this.authService.getSignupStatus();
+    }
     signup(signupDto) {
         return this.authService.signup(signupDto);
     }
@@ -45,6 +48,12 @@ let AuthController = class AuthController {
     }
 };
 exports.AuthController = AuthController;
+__decorate([
+    (0, common_1.Get)('signup-status'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "getSignupStatus", null);
 __decorate([
     (0, common_1.Post)('signup'),
     __param(0, (0, common_1.Body)()),

@@ -4,10 +4,12 @@ import {
   UnauthorizedException,
   NotFoundException,
   BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { User } from '../entities/user.entity';
 import { Couple } from '../entities/couple.entity';
@@ -23,9 +25,21 @@ export class AuthService {
     @InjectRepository(Couple)
     private coupleRepository: Repository<Couple>,
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
+  async getSignupStatus() {
+    const allowSignupEnv = this.configService.get<string>('ALLOW_SIGNUP', 'true');
+    const allowSignup = allowSignupEnv.toLowerCase() === 'true';
+    return { allowSignup };
+  }
+
   async signup(dto: SignupDto) {
+    const { allowSignup } = await this.getSignupStatus();
+    if (!allowSignup) {
+      throw new ForbiddenException('현재 신규 회원가입이 마감되었습니다. 등록된 커플만 이용 가능합니다.');
+    }
+
     const { email, password, name } = dto;
 
     const existing = await this.userRepository.findOne({ where: { email } });

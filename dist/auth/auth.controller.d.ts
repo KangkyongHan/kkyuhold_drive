@@ -5,6 +5,9 @@ import { ConnectCoupleDto } from './dto/connect-couple.dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
+    getSignupStatus(): Promise<{
+        allowSignup: boolean;
+    }>;
     signup(signupDto: SignupDto): Promise<{
         message: string;
         inviteCode: string;

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { apiFetch } from '@/lib/api';
 import { Button, Input, Card } from '@/components/ui';
 
 export default function AuthPage() {
@@ -9,16 +10,36 @@ export default function AuthPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [allowSignup, setAllowSignup] = useState<boolean>(true);
   const { loading, login, signup } = useAuth();
+
+  useEffect(() => {
+    // 백엔드의 신규 회원가입 허용 상태 확인
+    apiFetch('/auth/signup-status')
+      .then((res: any) => {
+        if (res && typeof res.allowSignup === 'boolean') {
+          setAllowSignup(res.allowSignup);
+          if (!res.allowSignup) {
+            setIsLogin(true); // 가입 차단 상태면 무조건 로그인 폼으로 고정
+          }
+        }
+      })
+      .catch(() => {
+        // 네트워크 에러 시 기본값 유지
+      });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       if (isLogin) {
-        console.log('로그인 시도 중:', email);
         await login(email, password);
       } else {
+        if (!allowSignup) {
+          alert('현재 신규 회원가입이 마감되었습니다.');
+          return;
+        }
         await signup(email, password, name);
         alert('회원가입이 완료되었습니다. 로그인해 주세요.');
         setIsLogin(true);
@@ -73,15 +94,33 @@ export default function AuthPage() {
         </form>
 
         <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '14px' }}>
-          <span style={{ color: 'var(--text-muted)' }}>
-            {isLogin ? '아직 회원이 아니신가요? ' : '이미 계정이 있으신가요? '}
-          </span>
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 'bold', cursor: 'pointer' }}
-          >
-            {isLogin ? '회원가입' : '로그인'}
-          </button>
+          {allowSignup ? (
+            <>
+              <span style={{ color: 'var(--text-muted)' }}>
+                {isLogin ? '아직 회원이 아니신가요? ' : '이미 계정이 있으신가요? '}
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsLogin(!isLogin)}
+                style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 'bold', cursor: 'pointer' }}
+              >
+                {isLogin ? '회원가입' : '로그인'}
+              </button>
+            </>
+          ) : (
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 14px',
+              borderRadius: '20px',
+              background: '#f8f9fa',
+              color: '#888',
+              fontSize: '12px'
+            }}>
+              🔒 등록된 커플 전용 프라이빗 공간입니다
+            </div>
+          )}
         </div>
       </Card>
     </main>

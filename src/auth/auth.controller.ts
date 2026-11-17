@@ -16,6 +16,11 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Get('signup-status')
+  getSignupStatus() {
+    return this.authService.getSignupStatus();
+  }
+
   @Post('signup')
   signup(@Body() signupDto: SignupDto) {
     return this.authService.signup(signupDto);

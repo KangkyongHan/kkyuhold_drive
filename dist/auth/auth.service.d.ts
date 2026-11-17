@@ -1,5 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 import { User } from '../entities/user.entity';
 import { Couple } from '../entities/couple.entity';
 import { SignupDto } from './dto/signup.dto';
@@ -9,7 +10,11 @@ export declare class AuthService {
     private userRepository;
     private coupleRepository;
     private jwtService;
-    constructor(userRepository: Repository<User>, coupleRepository: Repository<Couple>, jwtService: JwtService);
+    private configService;
+    constructor(userRepository: Repository<User>, coupleRepository: Repository<Couple>, jwtService: JwtService, configService: ConfigService);
+    getSignupStatus(): Promise<{
+        allowSignup: boolean;
+    }>;
     signup(dto: SignupDto): Promise<{
         message: string;
         inviteCode: string;

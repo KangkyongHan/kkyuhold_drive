@@ -50,6 +50,7 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const config_1 = require("@nestjs/config");
 const bcrypt = __importStar(require("bcrypt"));
 const user_entity_1 = require("../entities/user.entity");
 const couple_entity_1 = require("../entities/couple.entity");
@@ -57,12 +58,23 @@ let AuthService = class AuthService {
     userRepository;
     coupleRepository;
     jwtService;
-    constructor(userRepository, coupleRepository, jwtService) {
+    configService;
+    constructor(userRepository, coupleRepository, jwtService, configService) {
         this.userRepository = userRepository;
         this.coupleRepository = coupleRepository;
         this.jwtService = jwtService;
+        this.configService = configService;
+    }
+    async getSignupStatus() {
+        const allowSignupEnv = this.configService.get('ALLOW_SIGNUP', 'true');
+        const allowSignup = allowSignupEnv.toLowerCase() === 'true';
+        return { allowSignup };
     }
     async signup(dto) {
+        const { allowSignup } = await this.getSignupStatus();
+        if (!allowSignup) {
+            throw new common_1.ForbiddenException('현재 신규 회원가입이 마감되었습니다. 등록된 커플만 이용 가능합니다.');
+        }
         const { email, password, name } = dto;
         const existing = await this.userRepository.findOne({ where: { email } });
         if (existing) {
@@ -149,6 +161,7 @@ exports.AuthService = AuthService = __decorate([
     __param(1, (0, typeorm_1.InjectRepository)(couple_entity_1.Couple)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        config_1.ConfigService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map
