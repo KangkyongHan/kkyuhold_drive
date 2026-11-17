@@ -1,5 +1,9 @@
 const getBaseUrl = () => {
-  let url = process.env.NEXT_PUBLIC_API_URL || '/api';
+  let url = process.env.NEXT_PUBLIC_API_URL;
+  // Vercel 환경변수가 비어있거나 누락된 경우 기본 Render 백엔드로 자동 직결
+  if (!url || url === '/api') {
+    return 'https://kkyuhold-drive-api.onrender.com/api';
+  }
   url = url.replace(/\/+$/, ''); // 끝에 붙은 슬래시 제거
   if (url.startsWith('http') && !url.endsWith('/api')) {
     url += '/api'; // 도메인만 입력된 경우 자동으로 /api 붙임
