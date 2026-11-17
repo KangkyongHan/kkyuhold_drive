@@ -33,7 +33,10 @@ export const apiFetch = async (endpoint: string, options: any = {}) => {
       throw new Error('요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.');
     }
     const errorBody = await response.json().catch(() => ({}));
-    throw new Error(errorBody.message || '요청 중 오류가 발생했습니다.');
+    const errorMsg = Array.isArray(errorBody.message)
+      ? errorBody.message.join('\n')
+      : (errorBody.message || '요청 중 오류가 발생했습니다.');
+    throw new Error(errorMsg);
   }
 
   if (response.status === 204) return null;
@@ -53,7 +56,10 @@ export const apiUpload = async (endpoint: string, formData: FormData) => {
 
   if (!response.ok) {
     const errorBody = await response.json().catch(() => ({}));
-    throw new Error(errorBody.message || '업로드 중 오류가 발생했습니다.');
+    const errorMsg = Array.isArray(errorBody.message)
+      ? errorBody.message.join('\n')
+      : (errorBody.message || '업로드 중 오류가 발생했습니다.');
+    throw new Error(errorMsg);
   }
 
   return response.json();
