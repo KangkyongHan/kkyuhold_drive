@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useGallery } from '@/hooks/useGallery';
 import { useAlbums } from '@/hooks/useAlbums';
 import { Card } from '@/components/ui';
+import { getFileViewUrl } from '@/lib/api';
 
 function GalleryContent() {
   const router = useRouter();
@@ -81,10 +82,10 @@ function GalleryContent() {
             <div key={file.id} style={{ position: 'relative', aspectRatio: '1/1', background: 'var(--border)', borderRadius: '4px', overflow: 'hidden' }}>
               {file.isImage ? (
                 <img
-                  src={`/api/drive/files/${file.id}/view?token=${token}`}
+                  src={getFileViewUrl(file.id, token)}
                   alt={file.originalName}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  onClick={() => window.open(`/api/drive/files/${file.id}/view?token=${token}`, '_blank')}
+                  onClick={() => window.open(getFileViewUrl(file.id, token), '_blank')}
                 />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', textAlign: 'center', padding: '4px' }}>

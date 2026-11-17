@@ -1,4 +1,17 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+const getBaseUrl = () => {
+  let url = process.env.NEXT_PUBLIC_API_URL || '/api';
+  url = url.replace(/\/+$/, ''); // 끝에 붙은 슬래시 제거
+  if (url.startsWith('http') && !url.endsWith('/api')) {
+    url += '/api'; // 도메인만 입력된 경우 자동으로 /api 붙임
+  }
+  return url;
+};
+
+export const BASE_URL = getBaseUrl();
+
+export const getFileViewUrl = (fileId: string, token: string | null) => {
+  return `${BASE_URL}/drive/files/${fileId}/view${token ? `?token=${token}` : ''}`;
+};
 
 export const apiFetch = async (endpoint: string, options: any = {}) => {
   const token = localStorage.getItem('accessToken');
