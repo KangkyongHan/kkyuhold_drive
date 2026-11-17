@@ -35,7 +35,7 @@ export const apiFetch = async (endpoint: string, options: any = {}) => {
     const errorBody = await response.json().catch(() => ({}));
     const errorMsg = Array.isArray(errorBody.message)
       ? errorBody.message.join('\n')
-      : (errorBody.message || '요청 중 오류가 발생했습니다.');
+      : (errorBody.message || `요청 실패 (HTTP ${response.status})\n[호출 주소: ${BASE_URL}${endpoint}]`);
     throw new Error(errorMsg);
   }
 
