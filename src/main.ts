@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import contentParser from '@fastify/multipart';
 import helmet from '@fastify/helmet';
+import cors from '@fastify/cors';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -11,9 +12,14 @@ async function bootstrap() {
     new FastifyAdapter({ bodyLimit: 100 * 1024 * 1024 }), // 100MB
   );
 
+  await app.register(cors, {
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  });
   await app.register(contentParser);
   await app.register(helmet, {
-    contentSecurityPolicy: false, // Disable for development if needed, but keeping default
+    contentSecurityPolicy: false,
   });
 
   app.setGlobalPrefix('api');
@@ -26,8 +32,8 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: true, // For development
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
 

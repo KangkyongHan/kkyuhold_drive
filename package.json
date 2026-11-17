@@ -24,6 +24,7 @@
     "get:google-token": "node scripts/get-google-token.js"
   },
   "dependencies": {
+    "@fastify/cors": "^11.4.3",
     "@fastify/helmet": "^13.0.2",
     "@fastify/multipart": "^9.4.0",
     "@nestjs/common": "^11.0.1",
