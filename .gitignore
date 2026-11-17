@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+client/node_modules/
+
+# Build outputs
+dist/
+client/.next/
+client/out/
+
+# Environment files (CRITICAL SECURITY)
+.env
+.env.*
+!.env.example
+client/.env
+client/.env.*
+!client/.env.example
+
+# Local storage and database
+uploads/*
+!uploads/.gitkeep
+data/
+*.sqlite
+*.sqlite-journal
+*.pdf
+query_*.js
+*.bat
+db_debug.txt
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
