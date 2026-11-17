@@ -29,7 +29,7 @@ export const apiFetch = async (endpoint: string, options: any = {}) => {
     headers,
   }).catch((err) => {
     console.error('Fetch error:', err);
-    throw new Error('서버와 통신할 수 없습니다. 서버가 켜져 있는지 확인해 주세요.');
+    throw new Error(`서버와 통신할 수 없습니다.\n[호출 주소: ${BASE_URL}${endpoint}]\n상세: ${err.message || '네트워크 연결 실패'}`);
   });
 
   if (!response.ok) {
