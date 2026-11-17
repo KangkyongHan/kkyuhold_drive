@@ -9,14 +9,8 @@ const app_module_1 = require("./app.module");
 const common_1 = require("@nestjs/common");
 const multipart_1 = __importDefault(require("@fastify/multipart"));
 const helmet_1 = __importDefault(require("@fastify/helmet"));
-const cors_1 = __importDefault(require("@fastify/cors"));
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule, new platform_fastify_1.FastifyAdapter({ bodyLimit: 100 * 1024 * 1024 }));
-    await app.register(cors_1.default, {
-        origin: true,
-        credentials: true,
-        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    });
     await app.register(multipart_1.default);
     await app.register(helmet_1.default, {
         contentSecurityPolicy: false,
